@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Ajay Kawa – Projects Update</title>
+<!-- build 2026-10-04b: aj@ykawa.com -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='black'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E">
 <style>
 :root{
@@ -198,7 +199,9 @@ function friendly(err){
   if (c.includes('invalid-credential') || c.includes('wrong-password') || c.includes('user-not-found') || c.includes('invalid-login')) return 'Password not recognised for this user.';
   if (c.includes('too-many-requests')) return 'Too many attempts. Wait a few minutes and try again.';
   if (c.includes('network')) return 'No connection. Check your internet and try again.';
-  if (c.includes('permission-denied')) return 'This account is not allowed to open the update. Check the Firestore rules list this email.';
+  if (c.includes('permission-denied')) return 'Signed in, but the Firestore rules are blocking this account. Publish the new rules in Firebase → Firestore Database → Rules.';
+  if (c.includes('failed-precondition') || c.includes('not-found') || c.includes('unavailable')) return 'Signed in, but the Firestore database could not be reached. Check it has been created in Firebase → Firestore Database.';
+  if (c.includes('operation-not-allowed')) return 'Email/Password sign-in is not switched on in Firebase → Authentication → Sign-in method.';
   if (c.includes('requires-recent-login')) return 'For security, sign out and back in, then change your password.';
   if (c.includes('weak-password')) return 'Choose a password of at least 6 characters.';
   return (err && err.message) || 'Something went wrong.';
@@ -209,7 +212,7 @@ $('loginForm').onsubmit = async e => {
   e.preventDefault(); if (!auth) return;
   const btn = $('loginForm').querySelector('button'); btn.disabled = true; $('loginMsg').textContent = 'Signing in…';
   try { await signInWithEmailAndPassword(auth, $('user').value, $('pw').value); $('pw').value = ''; }
-  catch(err){ $('loginMsg').textContent = friendly(err); }
+  catch(err){ $('loginMsg').textContent = friendly(err) + ' (' + $('user').value + ' · ' + (err.code || 'error') + ')'; }
   btn.disabled = false;
 };
 $('outBtn').onclick = () => signOut(auth);
@@ -218,7 +221,7 @@ if (auth) onAuthStateChanged(auth, async user => {
   S.me = USERS.find(u => u.email.toLowerCase() === (user.email||'').toLowerCase()) || { name: user.email, email: user.email };
   $('loginMsg').textContent = 'Loading…';
   try { await loadAll(); $('loginMsg').textContent = ''; openApp(); }
-  catch(err){ $('loginMsg').textContent = friendly(err); await signOut(auth); }
+  catch(err){ $('loginMsg').textContent = friendly(err) + ' (' + (user.email || '') + ' · ' + (err.code || 'error') + ')'; await signOut(auth); }
 });
 
 /* ---------- data ---------- */
