@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>ORN Europe – Handover</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='4' fill='%23DC051E'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='11' fill='white' text-anchor='middle'%3EORN%3C/text%3E%3C/svg%3E">
+<title>Ajay Kawa – Projects Update</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='black'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E">
 <style>
 :root{
-  --navy:#0F1B2D; --navy-2:#18263B; --red:#DC051E; --ink:#1D2433; --slate:#5B6472;
+  --black:#000; --navy:#0F1B2D; --navy-2:#18263B; --red:#DC051E; --ink:#1D2433; --slate:#5B6472;
   --rule:#E2E5EA; --wash:#F4F6F8; --paper:#FFFFFF; --fill-bg:#FDECEE; --ok:#1E7B4F;
   --font:Aptos,"Segoe UI Variable","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
 }
@@ -18,42 +18,42 @@ body{font-family:var(--font);font-size:16px;line-height:1.55;color:var(--ink);ba
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 button,input,select,textarea{font:inherit}
 a{color:var(--navy)}
-:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+:focus-visible{outline:3px solid #8AB4F8;outline-offset:2px}
 .hidden{display:none!important}
 
-/* lock screen */
-#lock{min-height:100vh;background:var(--navy);color:#fff;display:grid;place-items:center;padding:24px}
-.lockbox{width:100%;max-width:420px}
-.mark{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;background:var(--red);
-  font-weight:800;font-size:20px;letter-spacing:.02em;border-radius:6px}
-.lockbox h1{font-size:34px;line-height:1.15;margin:28px 0 8px;font-weight:700}
-.lockbox p{color:#B9C2CF;margin:0 0 28px}
-.lockbox label{display:block;font-size:14px;color:#B9C2CF;margin-bottom:6px}
-.lockbox input{width:100%;padding:13px 14px;border-radius:6px;border:1px solid #33435C;background:var(--navy-2);color:#fff;font-size:17px}
-.lockbox .btn{width:100%;margin-top:14px;padding:13px;font-size:16px}
-.lockmsg{min-height:24px;margin-top:12px;font-size:14px;color:#FFB3BC}
-.linkbtn{background:none;border:0;color:#B9C2CF;text-decoration:underline;cursor:pointer;padding:0;font-size:14px}
+/* sign-in */
+#login{min-height:100vh;background:var(--black);color:#fff;display:grid;place-items:center;padding:24px}
+.loginbox{width:100%;max-width:380px}
+.loginbox h1{font-size:30px;line-height:1.2;margin:0 0 6px;font-weight:700;letter-spacing:-.01em}
+.loginbox .sub{color:#8C8C8C;margin:0 0 36px;font-size:15px}
+.loginbox label{display:block;font-size:14px;color:#A6A6A6;margin:16px 0 6px}
+.loginbox select,.loginbox input{width:100%;padding:12px 14px;border-radius:6px;border:1px solid #333;background:#111;color:#fff;font-size:16px}
+.loginbox select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#888 50%),linear-gradient(135deg,#888 50%,transparent 50%);
+  background-position:calc(100% - 20px) 52%,calc(100% - 15px) 52%;background-size:5px 5px;background-repeat:no-repeat}
+.loginbox .go{width:100%;margin-top:24px;padding:12px;border:0;border-radius:6px;background:#fff;color:#000;font-weight:700;cursor:pointer}
+.loginbox .go[disabled]{opacity:.6;cursor:wait}
+.loginmsg{min-height:22px;margin-top:14px;font-size:14px;color:#FF8A8A}
 
-.btn{background:var(--red);color:#fff;border:0;border-radius:6px;padding:10px 16px;font-weight:600;cursor:pointer}
-.btn:hover{filter:brightness(1.08)}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:6px;padding:10px 16px;font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.15)}
 .btn[disabled]{opacity:.55;cursor:wait}
 .btn.quiet{background:var(--paper);color:var(--navy);border:1px solid var(--rule)}
 .btn.small{padding:6px 11px;font-size:14px}
 
-/* app layout */
+/* app */
 #app{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
-#side{background:var(--navy);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 0 30px}
-.brand{display:flex;gap:12px;align-items:center;padding:0 22px 22px;border-bottom:1px solid #22324A}
-.brand .mark{width:40px;height:40px;font-size:13px}
-.brand b{display:block;font-size:16px}
-.brand span{font-size:13px;color:#9AA6B6}
-nav h4{margin:22px 22px 6px;font-size:13px;font-weight:600;color:#7F8DA1}
-nav a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 22px;color:#D9DFE7;text-decoration:none;font-size:15px;border-left:3px solid transparent}
-nav a:hover{background:var(--navy-2);color:#fff}
-nav a.on{background:var(--navy-2);color:#fff;border-left-color:var(--red)}
-nav a .cnt{font-size:12px;color:#FF8A97;white-space:nowrap}
-.sidefoot{padding:22px;font-size:13px;color:#7F8DA1}
-.sidefoot button{margin-top:8px}
+#side{background:var(--black);color:#fff;position:sticky;top:0;height:100vh;overflow-y:auto;padding:24px 0 30px}
+.brand{padding:0 22px 20px;border-bottom:1px solid #222}
+.brand b{display:block;font-size:17px}
+.brand span{font-size:13px;color:#8C8C8C}
+nav h4{margin:22px 22px 6px;font-size:13px;font-weight:600;color:#777}
+nav a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 22px;color:#D9D9D9;text-decoration:none;font-size:15px;border-left:3px solid transparent}
+nav a:hover{background:#141414;color:#fff}
+nav a.on{background:#1A1A1A;color:#fff;border-left-color:#fff}
+nav a .cnt{font-size:12px;color:#FF8A8A;white-space:nowrap}
+nav a .cnt.plain{color:#8C8C8C}
+.sidefoot{padding:22px;font-size:13px;color:#8C8C8C}
+.sidefoot .btn{margin-top:10px;background:#1A1A1A;border:1px solid #333}
 
 main{min-width:0}
 .top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:34px 48px 18px;border-bottom:1px solid var(--rule)}
@@ -76,7 +76,6 @@ th{background:var(--wash);color:var(--navy);text-align:left;font-weight:700;padd
 td{padding:9px 12px;border-top:1px solid var(--rule);vertical-align:top}
 tbody tr:first-child td{border-top:0}
 
-/* documents */
 .docs{margin-top:40px;padding-top:6px;border-top:2px solid var(--navy)}
 .docrow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule)}
 .docrow .n{font-weight:600;word-break:break-word}
@@ -86,81 +85,48 @@ tbody tr:first-child td{border-top:0}
 .filter{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
 .filter select,.filter input{padding:8px 10px;border:1px solid var(--rule);border-radius:6px;background:#fff}
 
-/* admin */
 .panel{border:1px solid var(--rule);border-radius:8px;padding:18px 20px;margin:18px 0}
 .panel h3{margin-top:0}
 .field{margin:10px 0}
 .field label{display:block;font-size:14px;color:var(--slate);margin-bottom:4px}
-.field input,.field select,.field textarea{width:100%;max-width:520px;padding:9px 11px;border:1px solid var(--rule);border-radius:6px;background:#fff}
+.field input,.field select{width:100%;max-width:520px;padding:9px 11px;border:1px solid var(--rule);border-radius:6px;background:#fff}
 .status{font-size:14px;margin-top:10px;white-space:pre-line}
 .status.err{color:var(--red)} .status.ok{color:var(--ok)}
-.pill{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;background:var(--wash);color:var(--slate);margin-left:6px}
 
-/* mobile */
 #menuBtn{display:none}
 @media (max-width:860px){
   #app{grid-template-columns:1fr}
-  #side{position:fixed;inset:0 auto 0 0;width:290px;z-index:20;transform:translateX(-100%);transition:transform .2s;padding-top:calc(22px + env(safe-area-inset-top,0px))}
-  #side.open{transform:none;box-shadow:0 0 0 100vmax rgba(15,27,45,.45)}
-  #menuBtn{display:inline-block}
+  #side{position:fixed;inset:0 auto 0 0;width:290px;z-index:20;transform:translateX(-100%);transition:transform .2s;padding-top:calc(24px + env(safe-area-inset-top,0px))}
+  #side.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.5)}
+  #menuBtn{display:inline-block;margin-bottom:10px}
   .top{padding:calc(18px + env(safe-area-inset-top,0px)) 18px 14px;flex-direction:column}
   .top h1{font-size:26px}
   article{padding:18px 18px 60px}
 }
 @media (prefers-reduced-motion:reduce){#side{transition:none}}
-@media print{#side,.top .tools,.docs .acts{display:none}#app{display:block}article{max-width:none}}
+@media print{#side,.top .tools,.docs .acts,#menuBtn{display:none}#app{display:block}article{max-width:none}}
 </style>
 </head>
 <body>
 
-<!-- Lock / setup -->
-<section id="lock">
-  <div class="lockbox">
-    <div class="mark" aria-hidden="true">ORN</div>
-    <h1>Europe handover</h1>
-    <p id="lockIntro">Private handover for ORN Europe. Enter your passphrase to open it.</p>
-
-    <form id="unlockForm" autocomplete="off">
-      <label for="pass">Passphrase</label>
-      <input id="pass" type="password" required autofocus>
-      <button class="btn" type="submit">Open handover</button>
-      <div class="lockmsg" id="lockMsg" role="status"></div>
-    </form>
-
-    <form id="setupForm" class="hidden" autocomplete="off">
-      <p style="margin-bottom:14px">First-time set-up. This encrypts the handover and saves it to GitHub. Only encrypted files ever reach GitHub.</p>
-      <label for="sToken">GitHub token (Contents: read and write on this repository)</label>
-      <input id="sToken" type="password" required>
-      <label for="sLabel" style="margin-top:12px">Your name</label>
-      <input id="sLabel" value="Ajay" required>
-      <label for="sPass" style="margin-top:12px">Choose a passphrase (at least 14 characters)</label>
-      <input id="sPass" type="password" minlength="14" required>
-      <label for="sPass2" style="margin-top:12px">Repeat passphrase</label>
-      <input id="sPass2" type="password" minlength="14" required>
-      <label for="sFile" style="margin-top:12px">Handover content file (handover-content.json)</label>
-      <input id="sFile" type="file" accept=".json,application/json" required>
-      <button class="btn" type="submit">Encrypt and save</button>
-      <div class="lockmsg" id="setupMsg" role="status"></div>
-    </form>
-
-    <p style="margin-top:22px"><button class="linkbtn" id="adminToggle" type="button">Admin: connect GitHub to upload</button></p>
-    <div id="tokenBox" class="hidden">
-      <label for="tokenIn">GitHub token</label>
-      <input id="tokenIn" type="password" autocomplete="off">
-      <p style="font-size:13px;margin-top:6px">Kept only in this browser tab and cleared when you close it.</p>
-    </div>
-  </div>
+<section id="login">
+  <form class="loginbox" id="loginForm" autocomplete="off">
+    <h1>Ajay Kawa Projects Update</h1>
+    <p class="sub">Confidential information</p>
+    <label for="user">User</label>
+    <select id="user"></select>
+    <label for="pw">Password</label>
+    <input id="pw" type="password" required autocomplete="current-password">
+    <button class="go" type="submit">Sign in</button>
+    <div class="loginmsg" id="loginMsg" role="status"></div>
+  </form>
 </section>
 
-<!-- App -->
 <div id="app" class="hidden">
   <aside id="side">
-    <div class="brand"><div class="mark" aria-hidden="true">ORN</div><div><b>Europe handover</b><span id="sideMeta"></span></div></div>
+    <div class="brand"><b>Projects Update</b><span id="sideMeta"></span></div>
     <nav id="nav" aria-label="Sections"></nav>
-    <div class="sidefoot">
-      <div id="whoami"></div>
-      <button class="btn quiet small" id="lockBtn" type="button">Lock</button>
-    </div>
+    <div class="sidefoot"><div id="whoami"></div><button class="btn small" id="outBtn" type="button">Sign out</button></div>
   </aside>
   <main>
     <div class="top">
@@ -179,368 +145,276 @@ tbody tr:first-child td{border-top:0}
   </main>
 </div>
 
-<script>
-'use strict';
-/* ---------- configuration ---------- */
-const CFG = { owner: 'orngroup', repo: 'ajaykawa', branch: 'main', iterations: 310000 };
-const UPLOAD_SECTIONS_EXTRA = [['other','Other documents']];
+<script type="module">
+/* =====================================================================
+   SETTINGS – paste your Firebase web-app config here
+   (Firebase console → Project settings → Your apps → Web app → Config)
+   ===================================================================== */
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCTxB6ra77vXbdaWuGPPEKWo2bdPB2HrPc",
+  authDomain: "ajaykawa-32558.firebaseapp.com",
+  projectId: "ajaykawa-32558",
+  storageBucket: "ajaykawa-32558.firebasestorage.app",
+  messagingSenderId: "675368452328",
+  appId: "1:675368452328:web:5e5e1215b405496177095d"
+};
+/* The two people who can sign in. Emails must match the users created in
+   Firebase Authentication and the list in the Firestore rules. */
+const USERS = [
+  { name: 'Ajay Kawa', email: 'ajay.kawa@orn.com' },
+  { name: 'Raj Kumar', email: 'raj@rajkumar.com' }
+];
+/* ===================================================================== */
 
-/* ---------- state ---------- */
-const S = { dek: null, dekRaw: null, keys: null, content: null, manifest: { docs: [] }, who: '', token: sessionStorage.getItem('ghtoken') || '' };
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, updatePassword, setPersistence, browserSessionPersistence }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc, Bytes }
+  from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
-/* ---------- helpers ---------- */
 const $ = id => document.getElementById(id);
-const te = new TextEncoder(), td = new TextDecoder();
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function b64(bytes){ let s=''; const b = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
-  for (let i=0;i<b.length;i+=0x8000) s += String.fromCharCode.apply(null, b.subarray(i,i+0x8000)); return btoa(s); }
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
-const rid = () => Array.from(crypto.getRandomValues(new Uint8Array(12)), x => x.toString(16).padStart(2,'0')).join('');
 const fmtSize = n => n < 1024 ? n+' B' : n < 1048576 ? (n/1024).toFixed(0)+' KB' : (n/1048576).toFixed(1)+' MB';
-const fmtDate = s => new Date(s).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const fmtDate = s => s ? new Date(s).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '';
+const today = () => new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+const CHUNK = 900 * 1024;
+const EXTRA_SECTIONS = [['other','Other documents']];
 
-/* ---------- crypto: AES-256-GCM, key wrapped per passphrase with PBKDF2 ---------- */
-async function kek(pass, salt, iter){
-  const base = await crypto.subtle.importKey('raw', te.encode(pass), 'PBKDF2', false, ['deriveKey']);
-  return crypto.subtle.deriveKey({name:'PBKDF2', salt, iterations: iter, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
-}
-async function seal(key, bytes){
-  const iv = crypto.getRandomValues(new Uint8Array(12));
-  const ct = new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, bytes));
-  const out = new Uint8Array(12 + ct.length); out.set(iv); out.set(ct, 12); return out;
-}
-async function unseal(key, bytes){
-  return new Uint8Array(await crypto.subtle.decrypt({name:'AES-GCM', iv: bytes.slice(0,12)}, key, bytes.slice(12)));
-}
-const dekKey = raw => crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt','decrypt']);
-async function wrap(label, pass, raw){
-  const salt = crypto.getRandomValues(new Uint8Array(16));
-  const k = await kek(pass, salt, CFG.iterations);
-  return { label, salt: b64(salt), ct: b64(await seal(k, raw)), added: new Date().toISOString() };
-}
-async function tryUnwrap(keys, pass){
-  for (const w of keys.wraps){
-    try { const k = await kek(pass, unb64(w.salt), keys.iterations); return { raw: await unseal(k, unb64(w.ct)), label: w.label }; }
-    catch(e){ /* wrong passphrase for this slot */ }
-  }
-  return null;
-}
+$('user').innerHTML = USERS.map(u => `<option value="${esc(u.email)}">${esc(u.name)}</option>`).join('');
 
-/* ---------- GitHub storage ---------- */
-const api = p => `https://api.github.com/repos/${CFG.owner}/${CFG.repo}/contents/${p}`;
-const ghHeaders = () => ({ Authorization: 'Bearer ' + S.token, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' });
-async function ghSha(path){
-  const r = await fetch(api(path) + '?ref=' + CFG.branch, { headers: ghHeaders(), cache: 'no-store' });
-  if (r.status === 404) return null;
-  if (!r.ok) throw new Error(ghError(r.status));
-  const j = await r.json(); return j.sha;
-}
-function ghError(status){
-  if (status === 401) return 'GitHub rejected the token. Check it has not expired.';
-  if (status === 403) return 'The token does not have permission to write to this repository.';
-  if (status === 404) return 'Repository not found. Check the token can see ' + CFG.owner + '/' + CFG.repo + '.';
-  if (status === 409) return 'GitHub reported a conflict. Wait a few seconds and try again.';
-  if (status === 422) return 'GitHub refused the file (it may be over the size limit).';
-  return 'GitHub returned error ' + status + '.';
-}
-async function ghPut(path, bytes, message){
-  for (let attempt = 0; attempt < 3; attempt++){
-    const sha = await ghSha(path);
-    const body = { message, content: b64(bytes), branch: CFG.branch }; if (sha) body.sha = sha;
-    const r = await fetch(api(path), { method:'PUT', headers: { ...ghHeaders(), 'Content-Type':'application/json' }, body: JSON.stringify(body) });
-    if (r.ok) return;
-    if (r.status !== 409 || attempt === 2) throw new Error(ghError(r.status));
-    await new Promise(res => setTimeout(res, 1200));
-  }
-}
-async function ghDelete(path, message){
-  const sha = await ghSha(path); if (!sha) return;
-  const r = await fetch(api(path), { method:'DELETE', headers: { ...ghHeaders(), 'Content-Type':'application/json' }, body: JSON.stringify({ message, sha, branch: CFG.branch }) });
-  if (!r.ok) throw new Error(ghError(r.status));
-}
-async function readBytes(path){
-  if (S.token){
-    try {
-      const r = await fetch(api(path) + '?ref=' + CFG.branch, { headers: { ...ghHeaders(), Accept: 'application/vnd.github.raw' }, cache: 'no-store' });
-      if (r.ok) return new Uint8Array(await r.arrayBuffer());
-      if (r.status === 404) return null;
-    } catch(e){}
-  }
-  const urls = [`https://raw.githubusercontent.com/${CFG.owner}/${CFG.repo}/${CFG.branch}/${path}?t=${Date.now()}`, `./${path}?t=${Date.now()}`];
-  let sawMissing = false;
-  for (const u of urls){
-    try { const r = await fetch(u, { cache:'no-store' }); if (r.ok) return new Uint8Array(await r.arrayBuffer()); if (r.status === 404) sawMissing = true; }
-    catch(e){}
-  }
-  if (sawMissing) return null;
-  throw new Error('Could not reach GitHub. Check your connection and reload.');
+const notConfigured = FIREBASE_CONFIG.apiKey.startsWith('PASTE');
+if (notConfigured) $('loginMsg').textContent = 'This site is not connected to Firebase yet. Paste the Firebase config into index.html.';
+const app = notConfigured ? null : initializeApp(FIREBASE_CONFIG);
+const auth = app && getAuth(app);
+const db = app && getFirestore(app);
+if (auth) setPersistence(auth, browserSessionPersistence).catch(() => {});
+
+const S = { me: null, meta: {}, sections: [], docs: [] };
+let current = 'start';
+
+function friendly(err){
+  const c = err && err.code || '';
+  if (c.includes('invalid-credential') || c.includes('wrong-password') || c.includes('user-not-found') || c.includes('invalid-login')) return 'Password not recognised for this user.';
+  if (c.includes('too-many-requests')) return 'Too many attempts. Wait a few minutes and try again.';
+  if (c.includes('network')) return 'No connection. Check your internet and try again.';
+  if (c.includes('permission-denied')) return 'This account is not allowed to open the update. Check the Firestore rules list this email.';
+  if (c.includes('requires-recent-login')) return 'For security, sign out and back in, then change your password.';
+  if (c.includes('weak-password')) return 'Choose a password of at least 6 characters.';
+  return (err && err.message) || 'Something went wrong.';
 }
 
-/* ---------- vault operations ---------- */
-async function saveManifest(msg){ await ghPut('vault/index.enc', await seal(S.dek, te.encode(JSON.stringify(S.manifest))), msg); }
-async function addDoc(file, section, note, progress){
-  const id = rid();
-  const bytes = new Uint8Array(await file.arrayBuffer());
-  progress && progress('Encrypting ' + file.name + '…');
-  const sealed = await seal(S.dek, bytes);
-  progress && progress('Uploading ' + file.name + ' (' + fmtSize(bytes.length) + ')…');
-  await ghPut('vault/' + id + '.enc', sealed, 'Add encrypted document');
-  S.manifest.docs.push({ id, name: file.name, type: file.type || 'application/octet-stream', size: bytes.length, section, note: note || '', uploaded: new Date().toISOString(), by: S.who });
-}
-async function getDoc(doc){
-  const bytes = await readBytes('vault/' + doc.id + '.enc');
-  if (!bytes) throw new Error('This file is not on GitHub yet. If it was uploaded in the last minute, try again shortly.');
-  return new Blob([await unseal(S.dek, bytes)], { type: doc.type });
-}
-
-/* ---------- unlock / setup ---------- */
-async function boot(){
-  if (S.token){ $('tokenIn').value = S.token; }
-  let keysBytes;
-  try { keysBytes = await readBytes('keys.json'); }
-  catch(e){ $('lockMsg').textContent = e.message; return; }
-  if (!keysBytes){
-    $('unlockForm').classList.add('hidden'); $('setupForm').classList.remove('hidden');
-    $('lockIntro').textContent = 'This handover has not been set up yet.';
-    $('adminToggle').parentElement.classList.add('hidden');
-    return;
-  }
-  S.keys = JSON.parse(td.decode(keysBytes));
-}
-$('adminToggle').onclick = () => $('tokenBox').classList.toggle('hidden');
-$('tokenIn').oninput = e => { S.token = e.target.value.trim(); if (S.token) sessionStorage.setItem('ghtoken', S.token); else sessionStorage.removeItem('ghtoken'); };
-
-$('unlockForm').onsubmit = async e => {
-  e.preventDefault();
-  const btn = e.submitter || e.target.querySelector('button'); btn.disabled = true;
-  $('lockMsg').textContent = 'Checking passphrase…';
-  try {
-    if (!S.keys) await boot();
-    if (!S.keys) throw new Error('Could not load the handover. Reload the page.');
-    const got = await tryUnwrap(S.keys, $('pass').value);
-    if (!got) throw new Error('That passphrase did not match. Check it and try again.');
-    S.dekRaw = got.raw; S.dek = await dekKey(got.raw); S.who = got.label;
-    $('lockMsg').textContent = 'Opening…';
-    const c = await readBytes('content.enc');
-    S.content = JSON.parse(td.decode(await unseal(S.dek, c)));
-    const m = await readBytes('vault/index.enc');
-    S.manifest = m ? JSON.parse(td.decode(await unseal(S.dek, m))) : { docs: [] };
-    $('pass').value = ''; $('lockMsg').textContent = '';
-    openApp();
-  } catch(err){ $('lockMsg').textContent = err.message; }
+/* ---------- sign in ---------- */
+$('loginForm').onsubmit = async e => {
+  e.preventDefault(); if (!auth) return;
+  const btn = $('loginForm').querySelector('button'); btn.disabled = true; $('loginMsg').textContent = 'Signing in…';
+  try { await signInWithEmailAndPassword(auth, $('user').value, $('pw').value); $('pw').value = ''; }
+  catch(err){ $('loginMsg').textContent = friendly(err); }
   btn.disabled = false;
 };
+$('outBtn').onclick = () => signOut(auth);
+if (auth) onAuthStateChanged(auth, async user => {
+  if (!user){ S.me = null; $('app').classList.add('hidden'); $('login').classList.remove('hidden'); $('view').innerHTML = ''; return; }
+  S.me = USERS.find(u => u.email.toLowerCase() === (user.email||'').toLowerCase()) || { name: user.email, email: user.email };
+  $('loginMsg').textContent = 'Loading…';
+  try { await loadAll(); $('loginMsg').textContent = ''; openApp(); }
+  catch(err){ $('loginMsg').textContent = friendly(err); await signOut(auth); }
+});
 
-$('setupForm').onsubmit = async e => {
-  e.preventDefault();
-  const msg = t => $('setupMsg').textContent = t;
-  const btn = e.target.querySelector('button'); btn.disabled = true;
-  try {
-    if ($('sPass').value !== $('sPass2').value) throw new Error('The two passphrases do not match.');
-    S.token = $('sToken').value.trim(); sessionStorage.setItem('ghtoken', S.token);
-    const file = $('sFile').files[0]; if (!file) throw new Error('Choose the handover-content.json file.');
-    const data = JSON.parse(await file.text());
-    if (!Array.isArray(data.sections)) throw new Error('That file is not a handover content file.');
-    msg('Creating encryption key…');
-    const raw = crypto.getRandomValues(new Uint8Array(32));
-    S.dekRaw = raw; S.dek = await dekKey(raw); S.who = $('sLabel').value.trim() || 'Owner';
-    S.keys = { v: 1, iterations: CFG.iterations, wraps: [ await wrap(S.who, $('sPass').value, raw) ] };
-    S.manifest = { docs: [] };
-    await publishContent(data, msg);
-    msg('Saving access key…');
-    await ghPut('keys.json', te.encode(JSON.stringify(S.keys, null, 1)), 'Set up handover access');
-    msg('Done.');
-    openApp();
-  } catch(err){ msg(err.message); }
-  btn.disabled = false;
-};
-
-async function publishContent(data, msg){
-  const atts = data.attachments || []; const clean = { ...data }; delete clean.attachments;
-  for (const a of atts){
-    const existing = S.manifest.docs.find(d => d.name === a.name && d.section === a.section);
-    const bytes = unb64(a.data);
-    if (existing){ msg('Updating ' + a.name + '…'); await ghPut('vault/' + existing.id + '.enc', await seal(S.dek, bytes), 'Update encrypted document'); existing.size = bytes.length; existing.uploaded = new Date().toISOString(); }
-    else { msg('Adding ' + a.name + '…'); await addDoc(new File([bytes], a.name, { type: a.type }), a.section, 'Handover document'); }
+/* ---------- data ---------- */
+async function loadAll(){
+  const m = await getDoc(doc(db, 'meta', 'site')); S.meta = m.exists() ? m.data() : {};
+  const sec = await getDocs(collection(db, 'sections'));
+  S.sections = sec.docs.map(d => ({ id: d.id, ...d.data() })).sort((a,b) => (a.order ?? 99) - (b.order ?? 99));
+  const dd = await getDocs(collection(db, 'docs'));
+  S.docs = dd.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+async function saveFile(name, type, bytes, section, note, progress){
+  const ref = doc(collection(db, 'docs')); const n = Math.max(1, Math.ceil(bytes.length / CHUNK));
+  for (let i = 0; i < n; i++){
+    progress && progress(`Uploading ${name} – part ${i+1} of ${n}…`);
+    await setDoc(doc(db, 'docs', ref.id, 'chunks', String(i).padStart(4,'0')), { d: Bytes.fromUint8Array(bytes.subarray(i*CHUNK, (i+1)*CHUNK)) });
   }
-  msg('Saving document list…'); await saveManifest('Update document list');
-  msg('Encrypting handover content…');
-  await ghPut('content.enc', await seal(S.dek, te.encode(JSON.stringify(clean))), 'Update handover content');
-  S.content = clean;
+  const meta = { name, type: type || 'application/octet-stream', size: bytes.length, section, note: note || '', uploaded: new Date().toISOString(), by: S.me.name, chunks: n };
+  await setDoc(ref, meta);  // written last, so half-finished uploads never appear in the list
+  S.docs.push({ id: ref.id, ...meta });
+}
+async function readFile(d){
+  const snap = await getDocs(collection(db, 'docs', d.id, 'chunks'));
+  const parts = snap.docs.sort((a,b) => a.id.localeCompare(b.id)).map(x => x.data().d.toUint8Array());
+  return new Blob(parts, { type: d.type });
+}
+async function removeFile(d){
+  const snap = await getDocs(collection(db, 'docs', d.id, 'chunks'));
+  for (const c of snap.docs) await deleteDoc(doc(db, 'docs', d.id, 'chunks', c.id));
+  await deleteDoc(doc(db, 'docs', d.id));
+  S.docs = S.docs.filter(x => x.id !== d.id);
+}
+async function importContent(data, msg){
+  if (!Array.isArray(data.sections)) throw new Error('That file is not a handover content file.');
+  for (let i = 0; i < data.sections.length; i++){
+    const s = data.sections[i]; msg(`Saving section ${i+1} of ${data.sections.length}…`);
+    await setDoc(doc(db, 'sections', s.id), { title: s.title, group: s.group, order: i, html: s.html, updatedAt: new Date().toISOString(), updatedBy: S.me.name });
+  }
+  await setDoc(doc(db, 'meta', 'site'), { updated: data.updated || today(), preparedBy: data.preparedBy || 'Ajay Kawa', preparedFor: data.preparedFor || 'Raj Kumar' });
+  for (const a of (data.attachments || [])){
+    const old = S.docs.find(d => d.name === a.name && d.section === a.section);
+    if (old){ msg('Replacing ' + a.name + '…'); await removeFile(old); }
+    await saveFile(a.name, a.type, unb64(a.data), a.section, 'Handover document', msg);
+  }
+  await loadAll();
 }
 
-/* ---------- in-page editing (admin) ---------- */
+/* ---------- layout ---------- */
+function allSections(){ return [...S.sections, { id:'documents', title:'All documents', group:'Files' }, { id:'admin', title:'Upload & settings', group:'Files' }]; }
+function fillCount(html){ return (String(html||'').match(/<mark>/g) || []).length; }
+function openApp(){
+  $('login').classList.add('hidden'); $('app').classList.remove('hidden');
+  $('sideMeta').textContent = S.meta.updated ? 'Updated ' + S.meta.updated : 'Confidential';
+  $('whoami').textContent = 'Signed in as ' + S.me.name;
+  renderNav();
+  const want = location.hash.slice(1);
+  go(want || (S.sections.length ? S.sections[0].id : 'admin'));
+}
+function renderNav(){
+  const groups = {};
+  for (const s of allSections()) (groups[s.group || 'Sections'] = groups[s.group || 'Sections'] || []).push(s);
+  $('nav').innerHTML = Object.entries(groups).map(([g, items]) => `<h4>${esc(g)}</h4>` + items.map(s => {
+    const n = fillCount(s.html);
+    const tag = s.id === 'documents' ? `<span class="cnt plain">${S.docs.length}</span>` : n ? `<span class="cnt" title="Items still to fill in">${n} to fill</span>` : '';
+    return `<a href="#${s.id}" data-id="${s.id}">${esc(s.title)}${tag}</a>`;
+  }).join('')).join('');
+}
+window.addEventListener('hashchange', () => { if (S.me) go(location.hash.slice(1)); });
+$('menuBtn').onclick = () => $('side').classList.toggle('open');
+$('nav').addEventListener('click', () => $('side').classList.remove('open'));
+
+function go(id){
+  const all = allSections(); const s = all.find(x => x.id === id) || all[0]; current = s.id;
+  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.id === s.id));
+  $('secTitle').textContent = s.title;
+  const n = fillCount(s.html);
+  $('secMeta').textContent = s.id === 'documents' ? 'Every file uploaded to the update' : s.id === 'admin' ? 'Upload files, load content and change your password'
+    : `Prepared by ${S.meta.preparedBy || 'Ajay Kawa'} for ${S.meta.preparedFor || 'Raj Kumar'}` + (s.updatedAt ? ` · last edited ${fmtDate(s.updatedAt)}${s.updatedBy ? ' by ' + s.updatedBy : ''}` : '') + (n ? ` · ${n} item${n>1?'s':''} still to fill in` : '');
+  if (s.id === 'documents') renderAllDocs();
+  else if (s.id === 'admin') renderAdmin();
+  else { $('view').innerHTML = '<div id="body">' + s.html + '</div>' + docsBlock(s.id); bindDocButtons(); }
+  const editable = S.sections.some(x => x.id === s.id);
+  $('editBtn').classList.toggle('hidden', !editable); $('editBtn').textContent = 'Edit this page'; $('cancelBtn').classList.add('hidden');
+  window.scrollTo(0,0); document.title = s.title + ' – Projects Update';
+}
+
+/* ---------- editing ---------- */
 $('editBtn').onclick = async () => {
   const body = $('body'); if (!body) return;
   if (body.contentEditable !== 'true'){
     body.contentEditable = 'true'; body.classList.add('editing'); body.focus();
     $('editBtn').textContent = 'Save changes'; $('cancelBtn').classList.remove('hidden');
-    $('secMeta').textContent = 'Editing – click into any text or table cell and type over the red items. Save when done.';
+    $('secMeta').textContent = 'Editing – click into any text or table cell and type over the red items, then save.';
     return;
   }
-  // tidy: drop red highlight from items that have been filled in
   body.querySelectorAll('mark').forEach(m => { if (!/^\s*\[/.test(m.textContent)) m.replaceWith(...m.childNodes); });
-  const sec = S.content.sections.find(x => x.id === current); sec.html = body.innerHTML;
+  const sec = S.sections.find(x => x.id === current);
   $('editBtn').disabled = true; $('editBtn').textContent = 'Saving…';
   try {
-    S.content.updated = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
-    await ghPut('content.enc', await seal(S.dek, te.encode(JSON.stringify(S.content))), 'Update handover content');
-    body.contentEditable = 'false'; body.classList.remove('editing'); renderNav(); go(current);
-  } catch(err){ alert(err.message + ' Your edits are still on screen – try saving again.'); $('editBtn').textContent = 'Save changes'; }
+    const upd = { html: body.innerHTML, updatedAt: new Date().toISOString(), updatedBy: S.me.name };
+    await setDoc(doc(db, 'sections', sec.id), upd, { merge: true }); Object.assign(sec, upd);
+    await setDoc(doc(db, 'meta', 'site'), { updated: today() }, { merge: true }); S.meta.updated = today();
+    renderNav(); go(current);
+  } catch(err){ alert(friendly(err) + ' Your edits are still on screen – try saving again.'); $('editBtn').textContent = 'Save changes'; }
   $('editBtn').disabled = false;
 };
 $('cancelBtn').onclick = () => go(current);
 
-/* ---------- app ---------- */
-let current = 'start';
-function sections(){ const s = [...S.content.sections, { id:'documents', title:'All documents', group:'Files' }]; if (S.token) s.push({ id:'admin', title:'Admin', group:'Files' }); return s; }
-function openApp(){
-  $('lock').classList.add('hidden'); $('app').classList.remove('hidden');
-  $('sideMeta').textContent = 'Updated ' + (S.content.updated || '');
-  $('whoami').textContent = 'Opened by ' + S.who;
-  renderNav();
-  go(location.hash.slice(1) || 'start');
-}
-function fillCount(html){ return (String(html||'').match(/<mark>/g) || []).length; }
-function renderNav(){
-  const groups = {};
-  for (const s of sections()) (groups[s.group] = groups[s.group] || []).push(s);
-  $('nav').innerHTML = Object.entries(groups).map(([g, items]) => `<h4>${esc(g)}</h4>` + items.map(s => {
-    const n = fillCount(s.html); const d = S.manifest.docs.filter(x => x.section === s.id).length;
-    const tag = s.id === 'documents' ? `<span class="cnt" style="color:#9AA6B6">${S.manifest.docs.length}</span>` : n ? `<span class="cnt" title="Items still to fill in">${n} to fill</span>` : '';
-    return `<a href="#${s.id}" data-id="${s.id}">${esc(s.title)}${tag}</a>`;
-  }).join('')).join('');
-}
-window.addEventListener('hashchange', () => { if (S.content) go(location.hash.slice(1)); });
-$('menuBtn').onclick = () => $('side').classList.toggle('open');
-$('nav').addEventListener('click', () => $('side').classList.remove('open'));
-$('lockBtn').onclick = () => { S.dek = S.dekRaw = S.content = null; S.manifest = { docs: [] }; $('view').innerHTML = ''; $('app').classList.add('hidden'); $('lock').classList.remove('hidden'); $('pass').focus(); };
-
-function go(id){
-  const all = sections(); const s = all.find(x => x.id === id) || all[0]; current = s.id;
-  document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.id === s.id));
-  $('secTitle').textContent = s.title;
-  const n = fillCount(s.html);
-  $('secMeta').textContent = s.id === 'documents' ? 'Every file uploaded to the handover' : s.id === 'admin' ? 'Upload files and manage access' :
-    `Prepared by ${S.content.preparedBy} for ${S.content.preparedFor} · ${S.content.updated}` + (n ? ` · ${n} item${n>1?'s':''} still to fill in` : '');
-  if (s.id === 'documents') renderAllDocs();
-  else if (s.id === 'admin') renderAdmin();
-  else { $('view').innerHTML = '<div id="body">' + s.html + '</div>' + docsBlock(s.id); bindDocButtons(); }
-  const editable = S.token && S.content.sections.some(x => x.id === s.id);
-  $('editBtn').classList.toggle('hidden', !editable); $('editBtn').textContent = 'Edit this page'; $('cancelBtn').classList.add('hidden');
-  window.scrollTo(0,0); document.title = s.title + ' – ORN Europe handover';
-}
-function sectionTitle(id){ const s = sections().find(x => x.id === id); return s ? s.title : (UPLOAD_SECTIONS_EXTRA.find(x=>x[0]===id)||[,id])[1]; }
+/* ---------- documents ---------- */
+function sectionTitle(id){ const s = allSections().find(x => x.id === id); return s ? s.title : (EXTRA_SECTIONS.find(x => x[0] === id) || [,id])[1]; }
 function docRow(d, showSection){
   const canView = /pdf|image|text/.test(d.type);
   return `<div class="docrow"><div><div class="n">${esc(d.name)}</div><div class="d">${fmtSize(d.size)} · added ${fmtDate(d.uploaded)}${d.by ? ' by ' + esc(d.by) : ''}${showSection ? ' · ' + esc(sectionTitle(d.section)) : ''}${d.note ? ' · ' + esc(d.note) : ''}</div></div>
-    <div class="acts">${canView ? `<button class="btn quiet small" data-act="view" data-id="${d.id}">View</button>` : ''}<button class="btn small" data-act="dl" data-id="${d.id}">Download</button>${S.token ? `<button class="btn quiet small" data-act="del" data-id="${d.id}">Delete</button>` : ''}</div></div>`;
+    <div class="acts">${canView ? `<button class="btn quiet small" data-act="view" data-id="${d.id}">View</button>` : ''}<button class="btn small" data-act="dl" data-id="${d.id}">Download</button><button class="btn quiet small" data-act="del" data-id="${d.id}">Delete</button></div></div>`;
 }
 function docsBlock(sec){
-  const docs = S.manifest.docs.filter(d => d.section === sec);
-  return `<section class="docs"><h2>Documents</h2>${docs.length ? docs.map(d => docRow(d)).join('') : `<p class="empty">No documents in this section yet.${S.token ? ' Add them from Admin.' : ''}</p>`}</section>`;
+  const docs = S.docs.filter(d => d.section === sec).sort((a,b) => a.name.localeCompare(b.name));
+  return `<section class="docs"><h2>Documents</h2>${docs.length ? docs.map(d => docRow(d)).join('') : '<p class="empty">No documents in this section yet. Add them from Upload &amp; settings.</p>'}</section>`;
 }
 function renderAllDocs(){
-  const opts = [...new Set(S.manifest.docs.map(d => d.section))];
+  const opts = [...new Set(S.docs.map(d => d.section))];
   $('view').innerHTML = `<div class="filter"><input id="q" type="search" placeholder="Search file names" aria-label="Search file names">
     <select id="fs" aria-label="Filter by section"><option value="">All sections</option>${opts.map(o => `<option value="${esc(o)}">${esc(sectionTitle(o))}</option>`).join('')}</select></div><div id="list"></div>`;
   const draw = () => { const q = $('q').value.toLowerCase(), f = $('fs').value;
-    const docs = S.manifest.docs.filter(d => (!f || d.section === f) && (!q || d.name.toLowerCase().includes(q))).sort((a,b) => b.uploaded.localeCompare(a.uploaded));
+    const docs = S.docs.filter(d => (!f || d.section === f) && (!q || d.name.toLowerCase().includes(q))).sort((a,b) => String(b.uploaded).localeCompare(String(a.uploaded)));
     $('list').innerHTML = docs.length ? docs.map(d => docRow(d, true)).join('') : '<p class="empty">No documents match.</p>'; bindDocButtons(); };
   $('q').oninput = draw; $('fs').onchange = draw; draw();
 }
 function bindDocButtons(){
   $('view').querySelectorAll('[data-act]').forEach(b => b.onclick = async () => {
-    const d = S.manifest.docs.find(x => x.id === b.dataset.id); if (!d) return;
+    const d = S.docs.find(x => x.id === b.dataset.id); if (!d) return;
     const label = b.textContent; b.disabled = true;
     try {
       if (b.dataset.act === 'del'){
-        if (!confirm('Delete ' + d.name + ' from the handover? This cannot be undone.')) { b.disabled = false; return; }
-        b.textContent = 'Deleting…';
-        await ghDelete('vault/' + d.id + '.enc', 'Remove encrypted document');
-        S.manifest.docs = S.manifest.docs.filter(x => x.id !== d.id); await saveManifest('Update document list');
-        renderNav(); go(current); return;
+        if (!confirm('Delete ' + d.name + '? This cannot be undone.')) { b.disabled = false; return; }
+        b.textContent = 'Deleting…'; await removeFile(d); renderNav(); go(current); return;
       }
-      b.textContent = 'Decrypting…';
-      const blob = await getDoc(d); const url = URL.createObjectURL(blob);
+      b.textContent = 'Opening…';
+      const url = URL.createObjectURL(await readFile(d));
       if (b.dataset.act === 'view') window.open(url, '_blank', 'noopener');
       else { const a = document.createElement('a'); a.href = url; a.download = d.name; document.body.appendChild(a); a.click(); a.remove(); }
       setTimeout(() => URL.revokeObjectURL(url), 60000);
-    } catch(err){ alert(err.message); }
+    } catch(err){ alert(friendly(err)); }
     b.textContent = label; b.disabled = false;
   });
 }
 
+/* ---------- upload & settings ---------- */
 function renderAdmin(){
-  const secOpts = [...S.content.sections.map(s => [s.id, s.title]), ...UPLOAD_SECTIONS_EXTRA];
+  const secOpts = [...S.sections.map(s => [s.id, s.title]), ...EXTRA_SECTIONS];
   $('view').innerHTML = `
+  ${S.sections.length ? '' : `<div class="panel"><h3>Get started</h3><p>The update has no content yet. Load <strong>handover-content.json</strong> below to create all the sections and the first documents.</p></div>`}
   <div class="panel"><h3>Upload documents</h3>
-    <p>Files are encrypted in your browser before they go to GitHub. Up to about 50 MB per file.</p>
-    <div class="field"><label for="upSec">Section</label><select id="upSec">${secOpts.map(([v,t]) => `<option value="${v}">${esc(t)}</option>`).join('')}</select></div>
+    <p>Choose the section, then one or more files. GitHub zips go in “GitHub files”. Large files upload in parts – keep this page open until it says done.</p>
+    <div class="field"><label for="upSec">Section</label><select id="upSec">${secOpts.map(([v,t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select></div>
     <div class="field"><label for="upFiles">Files</label><input id="upFiles" type="file" multiple></div>
     <div class="field"><label for="upNote">Note (optional)</label><input id="upNote" placeholder="e.g. Signed copy, 1 Aug 2026"></div>
-    <button class="btn" id="upBtn" type="button">Encrypt and upload</button><div class="status" id="upMsg" role="status"></div></div>
+    <button class="btn" id="upBtn" type="button">Upload</button><div class="status" id="upMsg" role="status"></div></div>
 
-  <div class="panel"><h3>Who can open the handover</h3>
-    <p>Each person has their own passphrase. Give Raj his own rather than sharing yours, and send it by phone call rather than WhatsApp or email.</p>
-    <div id="wraps"></div>
-    <div class="field"><label for="nwLabel">Name</label><input id="nwLabel" placeholder="Raj"></div>
-    <div class="field"><label for="nwPass">Passphrase (at least 14 characters)</label><input id="nwPass" type="password" autocomplete="new-password"></div>
-    <button class="btn" id="nwBtn" type="button">Add person</button><div class="status" id="nwMsg" role="status"></div></div>
-
-  <div class="panel"><h3>Update handover text</h3>
-    <p>Load a new handover-content.json (for example after Claude updates the handover). Documents you have uploaded are kept.</p>
+  <div class="panel"><h3>Load or update handover content</h3>
+    <p>Choose a handover-content.json file. Sections are created or replaced; documents you uploaded yourself are kept.</p>
     <div class="field"><input id="cFile" type="file" accept=".json,application/json"></div>
-    <button class="btn quiet" id="cBtn" type="button">Encrypt and replace text</button><div class="status" id="cMsg" role="status"></div></div>`;
-  const sel = $('upSec'); if (S.content.sections.some(s => s.id === current)) sel.value = current;
-  drawWraps();
+    <button class="btn quiet" id="cBtn" type="button">Load content</button><div class="status" id="cMsg" role="status"></div></div>
+
+  <div class="panel"><h3>Change my password</h3>
+    <div class="field"><label for="np">New password (at least 6 characters)</label><input id="np" type="password" autocomplete="new-password"></div>
+    <button class="btn quiet" id="npBtn" type="button">Change password</button><div class="status" id="npMsg" role="status"></div></div>`;
+  if (S.sections.some(s => s.id === current)) $('upSec').value = current;
   $('upBtn').onclick = async () => {
     const files = [...$('upFiles').files]; const out = $('upMsg'); out.className = 'status';
     if (!files.length){ out.textContent = 'Choose at least one file.'; out.classList.add('err'); return; }
-    const big = files.find(f => f.size > 60 * 1048576); if (big){ out.textContent = big.name + ' is over 60 MB. Split it or put it in the Google Drive folder.'; out.classList.add('err'); return; }
+    const big = files.find(f => f.size > 200 * 1048576); if (big){ out.textContent = big.name + ' is over 200 MB. Put it in the Google Drive folder instead.'; out.classList.add('err'); return; }
     $('upBtn').disabled = true;
     try {
-      for (const f of files) await addDoc(f, sel.value, $('upNote').value.trim(), t => out.textContent = t);
-      out.textContent = 'Saving document list…'; await saveManifest('Update document list');
-      out.textContent = files.length + ' file' + (files.length > 1 ? 's' : '') + ' uploaded to ' + sectionTitle(sel.value) + '.'; out.classList.add('ok');
+      for (const f of files) await saveFile(f.name, f.type, new Uint8Array(await f.arrayBuffer()), $('upSec').value, $('upNote').value.trim(), t => out.textContent = t);
+      out.textContent = `${files.length} file${files.length > 1 ? 's' : ''} uploaded to ${sectionTitle($('upSec').value)}.`; out.classList.add('ok');
       $('upFiles').value = ''; $('upNote').value = ''; renderNav();
-    } catch(err){ out.textContent = err.message + '\nFiles uploaded before the error are saved; reload to see them.'; out.classList.add('err'); try { await saveManifest('Update document list'); } catch(e){} }
+    } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
     $('upBtn').disabled = false;
-  };
-  $('nwBtn').onclick = async () => {
-    const out = $('nwMsg'); out.className = 'status'; const label = $('nwLabel').value.trim(), pass = $('nwPass').value;
-    if (!label || pass.length < 14){ out.textContent = 'Enter a name and a passphrase of at least 14 characters.'; out.classList.add('err'); return; }
-    if (S.keys.wraps.some(w => w.label.toLowerCase() === label.toLowerCase())){ out.textContent = label + ' already has access. Remove them first to change their passphrase.'; out.classList.add('err'); return; }
-    $('nwBtn').disabled = true; out.textContent = 'Saving…';
-    try { const keys = { ...S.keys, wraps: [...S.keys.wraps, await wrap(label, pass, S.dekRaw)] };
-      await ghPut('keys.json', te.encode(JSON.stringify(keys, null, 1)), 'Update handover access'); S.keys = keys;
-      out.textContent = label + ' can now open the handover with their passphrase.'; out.classList.add('ok'); $('nwLabel').value = ''; $('nwPass').value = ''; drawWraps();
-    } catch(err){ out.textContent = err.message; out.classList.add('err'); }
-    $('nwBtn').disabled = false;
   };
   $('cBtn').onclick = async () => {
     const out = $('cMsg'); out.className = 'status'; const f = $('cFile').files[0];
     if (!f){ out.textContent = 'Choose the handover-content.json file.'; out.classList.add('err'); return; }
     $('cBtn').disabled = true;
-    try { const data = JSON.parse(await f.text()); if (!Array.isArray(data.sections)) throw new Error('That file is not a handover content file.');
-      await publishContent(data, t => out.textContent = t); out.textContent = 'Handover text updated.'; out.classList.add('ok'); renderNav();
-    } catch(err){ out.textContent = err.message; out.classList.add('err'); }
+    try { await importContent(JSON.parse(await f.text()), t => out.textContent = t);
+      $('sideMeta').textContent = 'Updated ' + S.meta.updated; renderNav(); renderAdmin();
+      $('cMsg').textContent = 'Content loaded – open any section from the menu.'; $('cMsg').className = 'status ok';
+    } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
     $('cBtn').disabled = false;
   };
+  $('npBtn').onclick = async () => {
+    const out = $('npMsg'); out.className = 'status'; const p = $('np').value;
+    if (p.length < 6){ out.textContent = 'Use at least 6 characters.'; out.classList.add('err'); return; }
+    try { await updatePassword(auth.currentUser, p); out.textContent = 'Password changed.'; out.classList.add('ok'); $('np').value = ''; }
+    catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
+  };
 }
-function drawWraps(){
-  $('wraps').innerHTML = S.keys.wraps.map((w,i) => `<div class="docrow"><div><div class="n">${esc(w.label)}${w.label === S.who ? '<span class="pill">you</span>' : ''}</div><div class="d">Added ${fmtDate(w.added)}</div></div>
-    <div class="acts">${S.keys.wraps.length > 1 && w.label !== S.who ? `<button class="btn quiet small" data-rm="${i}">Remove</button>` : ''}</div></div>`).join('');
-  $('wraps').querySelectorAll('[data-rm]').forEach(b => b.onclick = async () => {
-    const w = S.keys.wraps[+b.dataset.rm]; if (!confirm('Remove access for ' + w.label + '?')) return;
-    b.disabled = true;
-    try { const keys = { ...S.keys, wraps: S.keys.wraps.filter((_,j) => j !== +b.dataset.rm) };
-      await ghPut('keys.json', te.encode(JSON.stringify(keys, null, 1)), 'Update handover access'); S.keys = keys; drawWraps(); }
-    catch(err){ alert(err.message); b.disabled = false; }
-  });
-}
-
-boot();
 </script>
 </body>
 </html>
