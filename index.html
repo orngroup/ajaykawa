@@ -47,7 +47,13 @@ a{color:var(--navy)}
 .brand{padding:0 22px 20px;border-bottom:1px solid #222}
 .brand b{display:block;font-size:17px}
 .brand span{font-size:13px;color:#8C8C8C}
-nav h4{margin:22px 22px 6px;font-size:13px;font-weight:600;color:#777}
+nav .gh{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;color:#fff;font-weight:700;font-size:15px;text-align:left;padding:12px 22px 6px;cursor:pointer}
+nav .gh .chev{color:#777;font-size:12px;transition:transform .15s}
+nav .gh[aria-expanded="true"] .chev{transform:rotate(90deg)}
+nav .gh .gc{font-size:12px;color:#FF8A8A;font-weight:400;margin-left:auto;margin-right:10px}
+nav .items{padding-bottom:6px}
+nav .items a{padding-left:34px;font-size:14.5px}
+nav .grp{border-bottom:1px solid #1A1A1A}
 nav a{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 22px;color:#D9D9D9;text-decoration:none;font-size:15px;border-left:3px solid transparent}
 nav a:hover{background:#141414;color:#fff}
 nav a.on{background:#1A1A1A;color:#fff;border-left-color:#fff}
@@ -259,6 +265,8 @@ async function importContent(data, msg){
     const s = data.sections[i]; msg(`Saving section ${i+1} of ${data.sections.length}…`);
     await setDoc(doc(db, 'sections', s.id), { title: s.title, group: s.group, order: i, html: s.html, updatedAt: new Date().toISOString(), updatedBy: S.me.name });
   }
+  const keep = new Set(data.sections.map(x => x.id));
+  for (const old of S.sections) if (!keep.has(old.id) && !old.custom) await deleteDoc(doc(db, 'sections', old.id));
   await setDoc(doc(db, 'meta', 'site'), { updated: data.updated || today(), preparedBy: data.preparedBy || 'Ajay Kawa', preparedFor: data.preparedFor || 'Raj Kumar' });
   for (const a of (data.attachments || [])){
     const old = S.docs.find(d => d.name === a.name && d.section === a.section);
@@ -277,25 +285,37 @@ function openApp(){
   $('whoami').textContent = 'Signed in as ' + S.me.name;
   renderNav();
   const want = location.hash.slice(1);
-  go(want || (S.sections.length ? S.sections[0].id : 'admin'));
+  go(S.sections.length ? (want || 'start') : 'admin');
 }
+const openGroups = new Set();
 function renderNav(){
   const groups = {};
-  for (const s of allSections()) (groups[s.group || 'Sections'] = groups[s.group || 'Sections'] || []).push(s);
-  $('nav').innerHTML = Object.entries(groups).map(([g, items]) => `<h4>${esc(g)}</h4>` + items.map(s => {
-    const n = fillCount(s.html);
-    const tag = s.id === 'documents' ? `<span class="cnt plain">${S.docs.length}</span>` : n ? `<span class="cnt" title="Items still to fill in">${n} to fill</span>` : '';
-    return `<a href="#${s.id}" data-id="${s.id}">${esc(s.title)}${tag}</a>`;
-  }).join('')).join('');
+  for (const s of allSections()) (groups[s.group || 'Other'] = groups[s.group || 'Other'] || []).push(s);
+
+  $('nav').innerHTML = Object.entries(groups).map(([g, items]) => {
+    const total = items.reduce((n, s) => n + fillCount(s.html), 0); const open = openGroups.has(g);
+    return `<div class="grp"><button class="gh" type="button" data-g="${esc(g)}" aria-expanded="${open}">${esc(g)}${total ? `<span class="gc">${total}</span>` : ''}<span class="chev">▶</span></button>
+      <div class="items${open ? '' : ' hidden'}">` + items.map(s => {
+        const n = fillCount(s.html);
+        const tag = s.id === 'documents' ? `<span class="cnt plain">${S.docs.length}</span>` : n ? `<span class="cnt" title="Items still to fill in">${n} to fill</span>` : '';
+        return `<a href="#${s.id}" data-id="${s.id}"${s.id === current ? ' class="on"' : ''}>${esc(s.title)}${tag}</a>`;
+      }).join('') + '</div></div>';
+  }).join('');
+  $('nav').querySelectorAll('.gh').forEach(b => b.onclick = e => {
+    e.stopPropagation(); const g = b.dataset.g; const wasOpen = openGroups.has(g);
+    openGroups.clear(); if (!wasOpen) openGroups.add(g);   // one company open at a time
+    renderNav();
+  });
 }
 window.addEventListener('hashchange', () => { if (S.me) go(location.hash.slice(1)); });
 $('menuBtn').onclick = () => $('side').classList.toggle('open');
-$('nav').addEventListener('click', () => $('side').classList.remove('open'));
+$('nav').addEventListener('click', e => { if (e.target.closest('a')) $('side').classList.remove('open'); });
 
 function go(id){
   const all = allSections(); const s = all.find(x => x.id === id) || all[0]; current = s.id;
+  if (!openGroups.has(s.group)) { openGroups.clear(); openGroups.add(s.group); renderNav(); }
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.id === s.id));
-  $('secTitle').textContent = s.title;
+  $('secTitle').textContent = (s.group && !['Overview','Files'].includes(s.group) ? s.group + ' – ' : '') + s.title;
   const n = fillCount(s.html);
   $('secMeta').textContent = s.id === 'documents' ? 'Every file uploaded to the update' : s.id === 'admin' ? 'Upload files, load content and change your password'
     : `Prepared by ${S.meta.preparedBy || 'Ajay Kawa'} for ${S.meta.preparedFor || 'Raj Kumar'}` + (s.updatedAt ? ` · last edited ${fmtDate(s.updatedAt)}${s.updatedBy ? ' by ' + s.updatedBy : ''}` : '') + (n ? ` · ${n} item${n>1?'s':''} still to fill in` : '');
@@ -369,25 +389,63 @@ function bindDocButtons(){
 }
 
 /* ---------- upload & settings ---------- */
+function sectionOptions(){
+  const groups = {}; for (const x of S.sections) (groups[x.group] = groups[x.group] || []).push(x);
+  return Object.entries(groups).map(([g, items]) => `<optgroup label="${esc(g)}">${items.map(x => `<option value="${esc(x.id)}">${esc(x.title)}</option>`).join('')}</optgroup>`).join('')
+    + `<optgroup label="Other">${EXTRA_SECTIONS.map(([v,t]) => `<option value="${v}">${esc(t)}</option>`).join('')}</optgroup>`;
+}
+function bindLoad(){
+  $('cBtn').onclick = async () => {
+    const out = $('cMsg'); out.className = 'status'; const f = $('cFile').files[0];
+    if (!f){ out.textContent = 'Choose the handover-content.json file.'; out.classList.add('err'); return; }
+    const btn = $('cBtn'); btn.disabled = true;
+    try { await importContent(JSON.parse(await f.text()), t => out.textContent = t);
+      $('sideMeta').textContent = 'Updated ' + S.meta.updated; renderNav(); go('start');
+    } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
+    btn.disabled = false;
+  };
+}
 function renderAdmin(){
-  const secOpts = [...S.sections.map(s => [s.id, s.title]), ...EXTRA_SECTIONS];
+  const empty = !S.sections.length;
+  const loadPanel = `<div class="panel"${empty ? ' style="border:2px solid var(--navy)"' : ''}><h3>${empty ? 'Step 1 – load the handover (one time)' : 'Load or update handover content'}</h3>
+    <p>${empty ? 'The hub is empty. Choose <strong>handover-content.json</strong> and click Load. This creates every company, page and the first documents. It takes about a minute.' : 'Choose a newer handover-content.json. Pages are replaced; pages you added yourself and documents you uploaded are kept.'}</p>
+    <div class="field"><input id="cFile" type="file" accept=".json,application/json"></div>
+    <button class="btn" id="cBtn" type="button">Load handover</button><div class="status" id="cMsg" role="status"></div></div>`;
+  if (empty){ $('view').innerHTML = loadPanel; bindLoad(); return; }
+  const groups = [...new Set(S.sections.map(x => x.group))];
   $('view').innerHTML = `
-  ${S.sections.length ? '' : `<div class="panel"><h3>Get started</h3><p>The update has no content yet. Load <strong>handover-content.json</strong> below to create all the sections and the first documents.</p></div>`}
   <div class="panel"><h3>Upload documents</h3>
-    <p>Choose the section, then one or more files. GitHub zips go in “GitHub files”. Large files upload in parts – keep this page open until it says done.</p>
-    <div class="field"><label for="upSec">Section</label><select id="upSec">${secOpts.map(([v,t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}</select></div>
+    <p>Choose where the files belong, then one or more files. GitHub zips go under GitHub &amp; databases → GitHub repositories. Large files upload in parts – keep this page open until it says done.</p>
+    <div class="field"><label for="upSec">Company and page</label><select id="upSec">${sectionOptions()}</select></div>
     <div class="field"><label for="upFiles">Files</label><input id="upFiles" type="file" multiple></div>
     <div class="field"><label for="upNote">Note (optional)</label><input id="upNote" placeholder="e.g. Signed copy, 1 Aug 2026"></div>
     <button class="btn" id="upBtn" type="button">Upload</button><div class="status" id="upMsg" role="status"></div></div>
 
-  <div class="panel"><h3>Load or update handover content</h3>
-    <p>Choose a handover-content.json file. Sections are created or replaced; documents you uploaded yourself are kept.</p>
-    <div class="field"><input id="cFile" type="file" accept=".json,application/json"></div>
-    <button class="btn quiet" id="cBtn" type="button">Load content</button><div class="status" id="cMsg" role="status"></div></div>
+  <div class="panel"><h3>Add a page</h3>
+    <p>Adds a new page under a company. Open it and use “Edit this page” to write in it.</p>
+    <div class="field"><label for="apG">Company</label><select id="apG">${groups.map(g => `<option>${esc(g)}</option>`).join('')}<option value="__new">New company…</option></select></div>
+    <div class="field hidden" id="apNewWrap"><label for="apNew">New company name</label><input id="apNew"></div>
+    <div class="field"><label for="apT">Page title</label><input id="apT" placeholder="e.g. Supplier contracts"></div>
+    <button class="btn quiet" id="apBtn" type="button">Add page</button><div class="status" id="apMsg" role="status"></div></div>
+
+  ${loadPanel}
 
   <div class="panel"><h3>Change my password</h3>
     <div class="field"><label for="np">New password (at least 6 characters)</label><input id="np" type="password" autocomplete="new-password"></div>
     <button class="btn quiet" id="npBtn" type="button">Change password</button><div class="status" id="npMsg" role="status"></div></div>`;
+  bindLoad();
+  $('apG').onchange = () => $('apNewWrap').classList.toggle('hidden', $('apG').value !== '__new');
+  $('apBtn').onclick = async () => {
+    const out = $('apMsg'); out.className = 'status';
+    const g = $('apG').value === '__new' ? $('apNew').value.trim() : $('apG').value; const t = $('apT').value.trim();
+    if (!g || !t){ out.textContent = 'Enter a company and a page title.'; out.classList.add('err'); return; }
+    const id = (g + '-' + t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60) + '-' + Date.now().toString(36);
+    const page = { title: t, group: g, order: 1000 + S.sections.length, html: '<p>New page – click <strong>Edit this page</strong> to add content.</p>', custom: true, updatedAt: new Date().toISOString(), updatedBy: S.me.name };
+    try { await setDoc(doc(db, 'sections', id), page); S.sections.push({ id, ...page });
+      const firstOfGroup = S.sections.find(x => x.group === g); if (firstOfGroup !== S.sections[S.sections.length-1]){ const i = S.sections.findIndex(x => x.id === id); const [p] = S.sections.splice(i,1); const last = S.sections.map(x => x.group).lastIndexOf(g); S.sections.splice(last+1, 0, p); }
+      renderNav(); location.hash = id;
+    } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
+  };
   if (S.sections.some(s => s.id === current)) $('upSec').value = current;
   $('upBtn').onclick = async () => {
     const files = [...$('upFiles').files]; const out = $('upMsg'); out.className = 'status';
@@ -400,16 +458,6 @@ function renderAdmin(){
       $('upFiles').value = ''; $('upNote').value = ''; renderNav();
     } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
     $('upBtn').disabled = false;
-  };
-  $('cBtn').onclick = async () => {
-    const out = $('cMsg'); out.className = 'status'; const f = $('cFile').files[0];
-    if (!f){ out.textContent = 'Choose the handover-content.json file.'; out.classList.add('err'); return; }
-    $('cBtn').disabled = true;
-    try { await importContent(JSON.parse(await f.text()), t => out.textContent = t);
-      $('sideMeta').textContent = 'Updated ' + S.meta.updated; renderNav(); renderAdmin();
-      $('cMsg').textContent = 'Content loaded – open any section from the menu.'; $('cMsg').className = 'status ok';
-    } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
-    $('cBtn').disabled = false;
   };
   $('npBtn').onclick = async () => {
     const out = $('npMsg'); out.className = 'status'; const p = $('np').value;
