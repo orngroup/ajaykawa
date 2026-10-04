@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<title>Ajay Kawa – Projects Update</title>
+<title>Raj Kumar Handover</title>
 <!-- build 2026-10-04b: aj@ykawa.com -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='black'/%3E%3Ctext x='16' y='21' font-family='Arial' font-weight='700' font-size='13' fill='white' text-anchor='middle'%3EAK%3C/text%3E%3C/svg%3E">
 <style>
@@ -75,6 +75,23 @@ article ul,article ol{padding-left:22px}
 article li{margin:4px 0}
 article li.sub{margin-left:20px;list-style:circle}
 #body.editing{outline:2px dashed var(--red);outline-offset:10px;border-radius:2px}
+.mg{display:flex;gap:2px;margin-left:6px}
+.mg button{background:none;border:0;color:#9A9A9A;cursor:pointer;font-size:12px;padding:2px 4px;border-radius:3px}
+.mg button:hover{background:#262626;color:#fff}
+nav .ghrow{display:flex;align-items:center}
+nav .ghrow .gh{flex:1;min-width:0}
+nav .ghrow .mg{margin-right:12px}
+nav .items .row{display:flex;align-items:center}
+nav .items .row a{flex:1;min-width:0}
+nav .addp{display:block;width:100%;text-align:left;background:none;border:0;color:#8AB4F8;font-size:13.5px;padding:6px 22px 6px 34px;cursor:pointer}
+nav .addc{display:block;width:calc(100% - 44px);margin:14px 22px;background:#141414;border:1px dashed #444;color:#8AB4F8;border-radius:6px;padding:8px;cursor:pointer;font-size:14px}
+#tools{position:sticky;top:0;z-index:5;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;margin:0 0 18px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+#tools .lbl{font-size:12px;color:var(--slate);margin:0 4px 0 8px}
+#tools .lbl:first-child{margin-left:0}
+#tools button{background:var(--wash);border:1px solid var(--rule);border-radius:5px;padding:5px 9px;font-size:13px;cursor:pointer;color:var(--navy)}
+#tools button:hover{background:#E8ECF1}
+#tools button.danger{color:var(--red)}
+#body .sel{outline:2px solid #8AB4F8;outline-offset:4px;border-radius:2px}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin:16px 0}
 .card{border:1px solid var(--rule);border-radius:8px;padding:16px 18px;background:#fff}
 .card .ck{font-size:12px;color:var(--slate);margin-top:8px}
@@ -124,8 +141,8 @@ tbody tr:first-child td{border-top:0}
 
 <section id="login">
   <form class="loginbox" id="loginForm" autocomplete="off">
-    <h1>Ajay Kawa Projects Update</h1>
-    <p class="sub">Confidential information</p>
+    <h1>Raj Kumar Handover</h1>
+    <p class="sub">Prepared by Ajay Kawa · Confidential</p>
     <label for="user">User</label>
     <select id="user"></select>
     <label for="pw">Password</label>
@@ -137,9 +154,9 @@ tbody tr:first-child td{border-top:0}
 
 <div id="app" class="hidden">
   <aside id="side">
-    <div class="brand"><b>Projects Update</b><span id="sideMeta"></span></div>
+    <div class="brand"><b>Raj Kumar Handover</b><span id="sideMeta"></span></div>
     <nav id="nav" aria-label="Sections"></nav>
-    <div class="sidefoot"><div id="whoami"></div><button class="btn small" id="outBtn" type="button">Sign out</button></div>
+    <div class="sidefoot"><button class="btn small" id="manageBtn" type="button">Manage menu</button><div id="whoami" style="margin-top:14px"></div><button class="btn small" id="outBtn" type="button">Sign out</button></div>
   </aside>
   <main>
     <div class="top">
@@ -228,6 +245,7 @@ $('loginForm').onsubmit = async e => {
   btn.disabled = false;
 };
 $('outBtn').onclick = () => signOut(auth);
+$('manageBtn').onclick = () => { S.manage = !S.manage; renderNav(); };
 if (auth) onAuthStateChanged(auth, async user => {
   if (!user){ S.me = null; $('app').classList.add('hidden'); $('login').classList.remove('hidden'); $('view').innerHTML = ''; return; }
   S.me = USERS.find(u => u.email.toLowerCase() === (user.email||'').toLowerCase()) || { name: user.email, email: user.email };
@@ -265,15 +283,23 @@ async function removeFile(d){
   await deleteDoc(doc(db, 'docs', d.id));
   S.docs = S.docs.filter(x => x.id !== d.id);
 }
-async function importContent(data, msg){
+async function importContent(data, msg, overwrite){
   if (!Array.isArray(data.sections)) throw new Error('That file is not a handover content file.');
+  const deleted = new Set(overwrite ? [] : (S.meta.deleted || []));
+  let skipped = 0;
   for (let i = 0; i < data.sections.length; i++){
-    const s = data.sections[i]; msg(`Saving section ${i+1} of ${data.sections.length}…`);
-    await setDoc(doc(db, 'sections', s.id), { title: s.title, group: s.group, order: i, html: s.html, updatedAt: new Date().toISOString(), updatedBy: S.me.name });
+    const s = data.sections[i]; msg(`Saving page ${i+1} of ${data.sections.length}…`);
+    const ex = S.sections.find(x => x.id === s.id);
+    if (!overwrite && (deleted.has(s.id) || (ex && ex.edited))){ skipped++; continue; }
+    await setDoc(doc(db, 'sections', s.id), { title: s.title, group: s.group, order: s.order ?? i, html: s.html, custom: !!s.custom, edited: !!s.edited, updatedAt: new Date().toISOString(), updatedBy: S.me.name });
   }
   const keep = new Set(data.sections.map(x => x.id));
-  for (const old of S.sections) if (!keep.has(old.id) && !old.custom) await deleteDoc(doc(db, 'sections', old.id));
-  await setDoc(doc(db, 'meta', 'site'), { updated: data.updated || today(), preparedBy: data.preparedBy || 'Ajay Kawa', preparedFor: data.preparedFor || 'Raj Kumar' });
+  for (const old of S.sections) if (!keep.has(old.id) && !old.custom && !old.edited) await deleteDoc(doc(db, 'sections', old.id));
+  const metaUpd = { updated: data.updated || today(), preparedBy: data.preparedBy || 'Ajay Kawa', preparedFor: data.preparedFor || 'Raj Kumar' };
+  if (overwrite){ metaUpd.deleted = []; if (data.groupOrder) metaUpd.groupOrder = data.groupOrder; }
+  else if (data.groupOrder && !(S.meta.groupOrder || []).length) metaUpd.groupOrder = data.groupOrder;
+  await setDoc(doc(db, 'meta', 'site'), metaUpd, { merge: true });
+  S.lastSkipped = skipped;
   for (const a of (data.attachments || [])){
     const old = S.docs.find(d => d.name === a.name && d.section === a.section);
     if (old){ msg('Replacing ' + a.name + '…'); await removeFile(old); }
@@ -294,24 +320,121 @@ function openApp(){
   go(S.sections.length ? (want || 'start') : 'admin');
 }
 const openGroups = new Set();
+S.manage = false;
+const FIXED = ['documents','admin'];
+function groupList(){
+  const names = [...new Set(S.sections.map(x => x.group || 'Other'))];
+  const order = S.meta.groupOrder || [];
+  names.sort((a,b) => { const ia = order.indexOf(a), ib = order.indexOf(b); return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib); });
+  return names;
+}
 function renderNav(){
   const groups = {};
-  for (const s of allSections()) (groups[s.group || 'Other'] = groups[s.group || 'Other'] || []).push(s);
-
+  for (const g of groupList()) groups[g] = [];
+  for (const s of S.sections) groups[s.group || 'Other'].push(s);
+  for (const g in groups) groups[g].sort((a,b) => (a.order ?? 0) - (b.order ?? 0));
+  groups['Files'] = [ ...(groups['Files'] || []), { id:'documents', title:'All documents', group:'Files' }, { id:'admin', title:'Upload & settings', group:'Files' } ];
+  const M = S.manage;
   $('nav').innerHTML = Object.entries(groups).map(([g, items]) => {
-    const total = items.reduce((n, s) => n + fillCount(s.html), 0); const open = openGroups.has(g);
-    return `<div class="grp"><button class="gh" type="button" data-g="${esc(g)}" aria-expanded="${open}">${esc(g)}${total ? `<span class="gc">${total}</span>` : ''}<span class="chev">▶</span></button>
+    const total = items.reduce((n, s) => n + fillCount(s.html), 0); const open = M || openGroups.has(g);
+    const gctl = M && g !== 'Files' ? `<span class="mg"><button data-gact="up" data-g="${esc(g)}" title="Move company up">▲</button><button data-gact="down" data-g="${esc(g)}" title="Move company down">▼</button><button data-gact="ren" data-g="${esc(g)}" title="Rename company">✎</button><button data-gact="del" data-g="${esc(g)}" title="Delete company">✕</button></span>` : '';
+    return `<div class="grp"><div class="ghrow"><button class="gh" type="button" data-g="${esc(g)}" aria-expanded="${open}">${esc(g)}${!M && total ? `<span class="gc">${total}</span>` : ''}<span class="chev">▶</span></button>${gctl}</div>
       <div class="items${open ? '' : ' hidden'}">` + items.map(s => {
         const n = fillCount(s.html);
         const tag = s.id === 'documents' ? `<span class="cnt plain">${S.docs.length}</span>` : n ? `<span class="cnt" title="Items still to fill in">${n} to fill</span>` : '';
-        return `<a href="#${s.id}" data-id="${s.id}"${s.id === current ? ' class="on"' : ''}>${esc(s.title)}${tag}</a>`;
-      }).join('') + '</div></div>';
-  }).join('');
+        const pctl = M && !FIXED.includes(s.id) ? `<span class="mg"><button data-pact="up" data-id="${s.id}" title="Move page up">▲</button><button data-pact="down" data-id="${s.id}" title="Move page down">▼</button><button data-pact="ren" data-id="${s.id}" title="Rename page">✎</button><button data-pact="del" data-id="${s.id}" title="Delete page">✕</button></span>` : '';
+        return `<div class="row"><a href="#${s.id}" data-id="${s.id}"${s.id === current ? ' class="on"' : ''}>${esc(s.title)}${M ? '' : tag}</a>${pctl}</div>`;
+      }).join('') + (M && g !== 'Files' ? `<button class="addp" data-addp="${esc(g)}" type="button">+ Add page</button>` : '') + '</div></div>';
+  }).join('') + (M ? '<button class="addc" id="addCompany" type="button">+ Add company</button>' : '');
   $('nav').querySelectorAll('.gh').forEach(b => b.onclick = e => {
+    if (e.target.closest('[data-gact]') || S.manage) return;
     e.stopPropagation(); const g = b.dataset.g; const wasOpen = openGroups.has(g);
     openGroups.clear(); if (!wasOpen) openGroups.add(g);   // one company open at a time
     renderNav();
   });
+  $('nav').querySelectorAll('[data-gact]').forEach(b => b.onclick = e => { e.stopPropagation(); companyAction(b.dataset.gact, b.dataset.g); });
+  $('nav').querySelectorAll('[data-pact]').forEach(b => b.onclick = e => { e.preventDefault(); e.stopPropagation(); pageAction(b.dataset.pact, b.dataset.id); });
+  $('nav').querySelectorAll('[data-addp]').forEach(b => b.onclick = () => addPage(b.dataset.addp));
+  if ($('addCompany')) $('addCompany').onclick = addCompany;
+  $('manageBtn').textContent = M ? 'Done managing menu' : 'Manage menu';
+}
+
+/* ---------- menu management ---------- */
+const slug = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40) || 'page';
+async function saveSection(sec, fields){
+  const upd = { ...fields, edited: true, updatedAt: new Date().toISOString(), updatedBy: S.me.name };
+  await setDoc(doc(db, 'sections', sec.id), upd, { merge: true }); Object.assign(sec, upd);
+}
+async function saveGroupOrder(list){ await setDoc(doc(db, 'meta', 'site'), { groupOrder: list, updated: today() }, { merge: true }); S.meta.groupOrder = list; }
+async function addPage(group, title){
+  title = title || prompt('Name of the new page under ' + group + ':'); if (!title || !title.trim()) return;
+  const inGroup = S.sections.filter(x => x.group === group);
+  const order = inGroup.length ? Math.max(...inGroup.map(x => x.order ?? 0)) + 1 : 1000 + S.sections.length;
+  const id = slug(group + '-' + title) + '-' + Date.now().toString(36);
+  const page = { title: title.trim(), group, order, html: '<p>New page – click <strong>Edit this page</strong> to add content.</p>', custom: true, edited: true, updatedAt: new Date().toISOString(), updatedBy: S.me.name };
+  try { await setDoc(doc(db, 'sections', id), page); S.sections.push({ id, ...page }); renderNav(); location.hash = id; }
+  catch(err){ alert(friendly(err)); }
+}
+async function addCompany(){
+  const g = prompt('Name of the new company or menu heading:'); if (!g || !g.trim()) return;
+  if (groupList().includes(g.trim())) return alert('There is already a company called ' + g.trim() + '.');
+  const first = prompt('Name of its first page (sub-menu item):', 'Overview'); if (!first || !first.trim()) return;
+  const list = groupList(); list.push(g.trim()); await saveGroupOrder(list);
+  await addPage(g.trim(), first);
+}
+async function pageAction(act, id){
+  const sec = S.sections.find(x => x.id === id); if (!sec) return;
+  try {
+    if (act === 'ren'){
+      const t = prompt('New name for this page:', sec.title); if (!t || !t.trim()) return;
+      await saveSection(sec, { title: t.trim() });
+    } else if (act === 'del'){
+      const nd = S.docs.filter(d => d.section === id).length;
+      if (!confirm('Delete the page “' + sec.title + '”?' + (nd ? ' Its ' + nd + ' document(s) will move to Other documents.' : '') + ' This cannot be undone.')) return;
+      await deleteDoc(doc(db, 'sections', id));
+      for (const d of S.docs.filter(d => d.section === id)){ await setDoc(doc(db, 'docs', d.id), { section: 'other' }, { merge: true }); d.section = 'other'; }
+      const del = [...new Set([...(S.meta.deleted || []), id])];
+      await setDoc(doc(db, 'meta', 'site'), { deleted: del, updated: today() }, { merge: true }); S.meta.deleted = del;
+      S.sections = S.sections.filter(x => x.id !== id);
+      if (current === id) location.hash = S.sections[0] ? S.sections[0].id : 'admin';
+    } else {
+      const list = S.sections.filter(x => x.group === sec.group).sort((a,b) => (a.order ?? 0) - (b.order ?? 0));
+      const i = list.indexOf(sec), j = act === 'up' ? i - 1 : i + 1;
+      if (j < 0 || j >= list.length) return;
+      // renumber the company's pages so the swap is always clean
+      list.splice(i, 1); list.splice(j, 0, sec);
+      const base = Math.min(...list.map(x => x.order ?? 0));
+      for (let k = 0; k < list.length; k++) if (list[k].order !== base + k) await saveSection(list[k], { order: base + k });
+    }
+    renderNav();
+  } catch(err){ alert(friendly(err)); }
+}
+async function companyAction(act, g){
+  try {
+    const pages = S.sections.filter(x => x.group === g);
+    if (act === 'ren'){
+      const n = prompt('New name for ' + g + ':', g); if (!n || !n.trim() || n.trim() === g) return;
+      for (const p of pages) await saveSection(p, { group: n.trim() });
+      await saveGroupOrder(groupList());
+      if (openGroups.has(g)){ openGroups.delete(g); openGroups.add(n.trim()); }
+    } else if (act === 'del'){
+      if (!confirm('Delete the company “' + g + '” and all ' + pages.length + ' of its pages? Documents move to Other documents. This cannot be undone.')) return;
+      const del = new Set(S.meta.deleted || []);
+      for (const p of pages){
+        await deleteDoc(doc(db, 'sections', p.id)); del.add(p.id);
+        for (const d of S.docs.filter(d => d.section === p.id)){ await setDoc(doc(db, 'docs', d.id), { section: 'other' }, { merge: true }); d.section = 'other'; }
+      }
+      await setDoc(doc(db, 'meta', 'site'), { deleted: [...del], updated: today() }, { merge: true }); S.meta.deleted = [...del];
+      S.sections = S.sections.filter(x => x.group !== g);
+      await saveGroupOrder(groupList());
+      if (!S.sections.some(x => x.id === current)) location.hash = S.sections[0] ? S.sections[0].id : 'admin';
+    } else {
+      const list = groupList(); const i = list.indexOf(g), j = act === 'up' ? i - 1 : i + 1;
+      if (j < 0 || j >= list.length) return;
+      [list[i], list[j]] = [list[j], list[i]]; await saveGroupOrder(list);
+    }
+    renderNav();
+  } catch(err){ alert(friendly(err)); }
 }
 window.addEventListener('hashchange', () => { if (S.me) go(location.hash.slice(1)); });
 $('menuBtn').onclick = () => $('side').classList.toggle('open');
@@ -319,7 +442,8 @@ $('nav').addEventListener('click', e => { if (e.target.closest('a')) $('side').c
 
 function go(id){
   const all = allSections(); const s = all.find(x => x.id === id) || all[0]; current = s.id;
-  if (!openGroups.has(s.group)) { openGroups.clear(); openGroups.add(s.group); renderNav(); }
+  if (!openGroups.has(s.group)) { openGroups.clear(); openGroups.add(s.group); }
+  renderNav();
   document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('on', a.dataset.id === s.id));
   $('secTitle').textContent = (s.group && !['Overview','Files'].includes(s.group) ? s.group + ' – ' : '') + s.title;
   const n = fillCount(s.html);
@@ -330,30 +454,105 @@ function go(id){
   else { $('view').innerHTML = '<div id="body">' + s.html + '</div>' + docsBlock(s.id); bindDocButtons(); }
   const editable = S.sections.some(x => x.id === s.id);
   $('editBtn').classList.toggle('hidden', !editable); $('editBtn').textContent = 'Edit this page'; $('cancelBtn').classList.add('hidden');
-  window.scrollTo(0,0); document.title = s.title + ' – Projects Update';
+  window.scrollTo(0,0); document.title = s.title + ' – Raj Kumar Handover';
 }
 
 /* ---------- editing ---------- */
+let selBlock = null, selRow = null, selItem = null;
+function topBlock(node){
+  const body = $('body'); if (!body || !node) return null;
+  while (node && node.parentNode !== body) node = node.parentNode;
+  return node && node.parentNode === body ? node : null;
+}
+function trackSelection(){
+  const body = $('body'); if (!body || body.contentEditable !== 'true') return;
+  const sel = window.getSelection(); if (!sel.rangeCount) return;
+  const n = sel.getRangeAt(0).startContainer; if (!body.contains(n)) return;
+  const el = n.nodeType === 1 ? n : n.parentElement;
+  const b = topBlock(el);
+  if (selBlock && selBlock !== b) selBlock.classList.remove('sel');
+  selBlock = b; if (b) b.classList.add('sel');
+  selRow = el.closest('tr'); selItem = el.closest('li');
+}
+document.addEventListener('selectionchange', trackSelection);
+function blockHTML(kind){
+  switch(kind){
+    case 'h2': return '<h2>New heading</h2>';
+    case 'h3': return '<h3>New sub-heading</h3>';
+    case 'p': return '<p>New paragraph</p>';
+    case 'ul': return '<ul><li>First point</li><li>Second point</li></ul>';
+    case 'table': return '<div class="tw"><table><thead><tr><th>Item</th><th>Detail</th></tr></thead><tbody><tr><td>…</td><td>…</td></tr><tr><td>…</td><td>…</td></tr></tbody></table></div>';
+    case 'note': return '<p class="note">Note</p>';
+    case 'fill': return '<p><mark>[TO FILL]</mark></p>';
+  }
+}
+function insertBlock(kind){
+  const body = $('body'); const tmp = document.createElement('div'); tmp.innerHTML = blockHTML(kind);
+  const el = tmp.firstElementChild;
+  if (selBlock && selBlock.parentNode === body) selBlock.after(el); else body.appendChild(el);
+  const target = el.querySelector('td,li') || el; const r = document.createRange(); r.selectNodeContents(target);
+  const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); el.scrollIntoView({ block: 'nearest' }); trackSelection();
+}
+function editAction(act){
+  const body = $('body');
+  if (act === 'delblock'){ if (!selBlock) return alert('Click into the part you want to delete first.'); const b = selBlock; selBlock = null; b.remove(); return; }
+  if (act === 'delline'){
+    if (selItem){ const l = selItem.parentElement; selItem.remove(); if (l && !l.querySelector('li')) (topBlock(l) || l).remove(); selItem = null; return; }
+    if (selRow){ const t = selRow.closest('table'); if (selRow.parentElement.tagName === 'THEAD') return alert('That is the header row – use Delete block to remove the whole table.'); selRow.remove(); if (t && !t.querySelector('tbody tr')) (topBlock(t) || t).remove(); selRow = null; return; }
+    return editAction('delblock');
+  }
+  if (act === 'addrow'){
+    if (!selRow) return alert('Click into a table row first.');
+    const r = selRow.parentElement.tagName === 'THEAD' ? selRow.closest('table').querySelector('tbody tr') : selRow;
+    const nr = r.cloneNode(true); nr.querySelectorAll('td').forEach(td => td.textContent = '…'); r.after(nr); return;
+  }
+  if (act === 'additem'){
+    if (!selItem) return alert('Click into a bullet point first.');
+    const li = document.createElement('li'); li.textContent = 'New point'; selItem.after(li); return;
+  }
+  if (act === 'up' || act === 'down'){
+    if (!selBlock) return alert('Click into the part you want to move first.');
+    const sib = act === 'up' ? selBlock.previousElementSibling : selBlock.nextElementSibling;
+    if (!sib) return; act === 'up' ? sib.before(selBlock) : sib.after(selBlock); selBlock.scrollIntoView({ block: 'nearest' }); return;
+  }
+  if (act === 'unfill'){ const m = window.getSelection().anchorNode; const mk = m && (m.nodeType === 1 ? m : m.parentElement).closest('mark'); if (mk) mk.replaceWith(...mk.childNodes); return; }
+}
+function showTools(on){
+  const ex = $('tools'); if (ex) ex.remove(); if (!on) return;
+  const t = document.createElement('div'); t.id = 'tools';
+  t.innerHTML = `<span class="lbl">Add:</span>
+    <button data-ins="h2">Heading</button><button data-ins="h3">Sub-heading</button><button data-ins="p">Paragraph</button>
+    <button data-ins="ul">Bullet list</button><button data-ins="table">Table</button><button data-ins="note">Note</button><button data-ins="fill">Red “to fill” item</button>
+    <span class="lbl">Selected part:</span>
+    <button data-act="up">Move up</button><button data-act="down">Move down</button>
+    <button data-act="addrow">+ Row</button><button data-act="additem">+ Bullet</button>
+    <button data-act="delline" class="danger">Delete line / row</button><button data-act="delblock" class="danger">Delete block</button>`;
+  t.addEventListener('mousedown', e => { if (e.target.closest('button')) e.preventDefault(); });
+  t.querySelectorAll('[data-ins]').forEach(b => b.onclick = () => insertBlock(b.dataset.ins));
+  t.querySelectorAll('[data-act]').forEach(b => b.onclick = () => editAction(b.dataset.act));
+  $('view').prepend(t);
+}
 $('editBtn').onclick = async () => {
   const body = $('body'); if (!body) return;
   if (body.contentEditable !== 'true'){
     body.contentEditable = 'true'; body.classList.add('editing'); body.focus();
+    showTools(true);
     $('editBtn').textContent = 'Save changes'; $('cancelBtn').classList.remove('hidden');
-    $('secMeta').textContent = 'Editing – click into any text or table cell and type over the red items, then save.';
+    $('secMeta').textContent = 'Editing – click into any part of the page, then use the toolbar to add, move or delete. Type over red items. Save when done; Cancel discards.';
     return;
   }
+  body.querySelectorAll('.sel').forEach(x => x.classList.remove('sel'));
   body.querySelectorAll('mark').forEach(m => { if (!/^\s*\[/.test(m.textContent)) m.replaceWith(...m.childNodes); });
   const sec = S.sections.find(x => x.id === current);
   $('editBtn').disabled = true; $('editBtn').textContent = 'Saving…';
   try {
-    const upd = { html: body.innerHTML, updatedAt: new Date().toISOString(), updatedBy: S.me.name };
-    await setDoc(doc(db, 'sections', sec.id), upd, { merge: true }); Object.assign(sec, upd);
+    await saveSection(sec, { html: body.innerHTML });
     await setDoc(doc(db, 'meta', 'site'), { updated: today() }, { merge: true }); S.meta.updated = today();
-    renderNav(); go(current);
+    selBlock = selRow = selItem = null; go(current);
   } catch(err){ alert(friendly(err) + ' Your edits are still on screen – try saving again.'); $('editBtn').textContent = 'Save changes'; }
   $('editBtn').disabled = false;
 };
-$('cancelBtn').onclick = () => go(current);
+$('cancelBtn').onclick = () => { if (confirm('Discard the changes on this page?')){ selBlock = selRow = selItem = null; go(current); } };
 
 /* ---------- documents ---------- */
 function sectionTitle(id){ const s = allSections().find(x => x.id === id); return s ? s.title : (EXTRA_SECTIONS.find(x => x[0] === id) || [,id])[1]; }
@@ -405,8 +604,9 @@ function bindLoad(){
     const out = $('cMsg'); out.className = 'status'; const f = $('cFile').files[0];
     if (!f){ out.textContent = 'Choose the handover-content.json file.'; out.classList.add('err'); return; }
     const btn = $('cBtn'); btn.disabled = true;
-    try { await importContent(JSON.parse(await f.text()), t => out.textContent = t);
+    try { await importContent(JSON.parse(await f.text()), t => out.textContent = t, !!($('cOver') && $('cOver').checked));
       $('sideMeta').textContent = 'Updated ' + S.meta.updated; renderNav(); go('start');
+      if (S.lastSkipped) setTimeout(() => alert(S.lastSkipped + ' page(s) were left as you edited, added or deleted them on the site. Tick “Also replace pages I have edited” to overwrite them.'), 300);
     } catch(err){ out.textContent = friendly(err); out.classList.add('err'); }
     btn.disabled = false;
   };
@@ -416,6 +616,7 @@ function renderAdmin(){
   const loadPanel = `<div class="panel"${empty ? ' style="border:2px solid var(--navy)"' : ''}><h3>${empty ? 'Step 1 – load the handover (one time)' : 'Load or update handover content'}</h3>
     <p>${empty ? 'The hub is empty. Choose <strong>handover-content.json</strong> and click Load. This creates every company, page and the first documents. It takes about a minute.' : 'Choose a newer handover-content.json. Pages are replaced; pages you added yourself and documents you uploaded are kept.'}</p>
     <div class="field"><input id="cFile" type="file" accept=".json,application/json"></div>
+    ${empty ? '' : '<div class="field"><label style="display:flex;gap:8px;align-items:center;color:var(--ink)"><input id="cOver" type="checkbox" style="width:auto"> Also replace pages I have edited, added or deleted on the site</label></div>'}
     <button class="btn" id="cBtn" type="button">Load handover</button><div class="status" id="cMsg" role="status"></div></div>`;
   if (empty){ $('view').innerHTML = loadPanel; bindLoad(); return; }
   const groups = [...new Set(S.sections.map(x => x.group))];
@@ -436,10 +637,23 @@ function renderAdmin(){
 
   ${loadPanel}
 
+  <div class="panel"><h3>Download the current content</h3>
+    <p>Saves every page exactly as it is now, including your live edits, as a file. Send this to Claude when you want the next update built from the live site rather than from the spreadsheet.</p>
+    <button class="btn quiet" id="exBtn" type="button">Download current content</button></div>
+
   <div class="panel"><h3>Change my password</h3>
     <div class="field"><label for="np">New password (at least 6 characters)</label><input id="np" type="password" autocomplete="new-password"></div>
     <button class="btn quiet" id="npBtn" type="button">Change password</button><div class="status" id="npMsg" role="status"></div></div>`;
   bindLoad();
+  $('exBtn').onclick = () => {
+    const data = { title: 'Raj Kumar Handover', updated: S.meta.updated, preparedBy: S.meta.preparedBy, preparedFor: S.meta.preparedFor, exportedAt: new Date().toISOString(), exportedBy: S.me.name,
+      groupOrder: groupList(), deleted: S.meta.deleted || [],
+      sections: S.sections.map(x => ({ id: x.id, title: x.title, group: x.group, order: x.order, html: x.html, custom: !!x.custom, edited: !!x.edited })),
+      documents: S.docs.map(d => ({ name: d.name, section: d.section, size: d.size, uploaded: d.uploaded })) };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data)], { type: 'application/json' }));
+    const a = document.createElement('a'); a.href = url; a.download = 'handover-live-export-' + new Date().toISOString().slice(0,10) + '.json'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+  };
   $('apG').onchange = () => $('apNewWrap').classList.toggle('hidden', $('apG').value !== '__new');
   $('apBtn').onclick = async () => {
     const out = $('apMsg'); out.className = 'status';
